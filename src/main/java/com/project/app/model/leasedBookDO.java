@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 
+//kitap kiralama islemine ait bilgiler
 @Data
 @Entity
 @Table(name = "leasedBook")

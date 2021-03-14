@@ -5,6 +5,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+
+//kitap modeline ait bilgiler
 @Data
 @Entity
 @Table(name = "book")

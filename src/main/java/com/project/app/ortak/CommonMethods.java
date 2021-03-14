@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
+//belirli format icin kullanilacak date convert classı
+
 public class CommonMethods {
 
     public static final String REVISION_ID = "$Id: CommonMethods.java,v 1.25.2.5 2014/09/16 14:46:15 barisd Exp $";

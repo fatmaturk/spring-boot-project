@@ -18,6 +18,8 @@ public class BookService  implements IBookService {
         return bookDAO.save(bookInfo);
     }
 
+
+    //kitap ozelinde yapilacak duzeltme icin kullanilacak
     @Override
     public bookDO updateBook(bookDO bookInfo) {
         String bookId = bookInfo.getOid();

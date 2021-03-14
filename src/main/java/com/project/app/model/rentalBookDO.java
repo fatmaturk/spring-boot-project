@@ -6,6 +6,8 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 
+//kitaplarin stok durumu
+
 @Data
 @Entity
 @Table(name = "rentalBook")

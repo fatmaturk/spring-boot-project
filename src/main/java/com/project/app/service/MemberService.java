@@ -19,6 +19,7 @@ public class MemberService implements IMemberService{
         return memberDAO.save(memberInfo);
     }
 
+    //uye ozelinde yapilacak duzeltme icin kullanilacak
     @Override
     public memberDO updateMember(memberDO memberInfo) {
         String memberId = memberInfo.getOid();
@@ -28,7 +29,7 @@ public class MemberService implements IMemberService{
             member.get().setSurname(memberInfo.getSurname());
             member.get().setTckn(memberInfo.getTckn());
             member.get().setBanStatus(memberInfo.isBanStatus());
-            member.get().setBanDate(memberInfo.getBanDate());
+            member.get().setBanEndDate(memberInfo.getBanEndDate());
             member.get().setEducationLevelId(memberInfo.getEducationLevelId());
             memberDAO.save(member.get());
             return member.get();
@@ -59,6 +60,11 @@ public class MemberService implements IMemberService{
         if(member.isPresent()){
             memberDAO.deleteById(oid);
         }
+    }
+
+    @Override
+    public void save(memberDO member) {
+        memberDAO.save(member);
     }
 
 }

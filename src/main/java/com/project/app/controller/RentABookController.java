@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -15,12 +16,12 @@ public class RentABookController {
     private IRentABookService rentABookService;
 
     @PostMapping(path = "/leasedBook",consumes = "application/json",produces = "application/json")
-    public ResponseEntity<leasedBookDO> createRent(@RequestBody leasedBookDO rentInfo){
+    public ResponseEntity<leasedBookDO> createRent(@RequestBody leasedBookDO rentInfo) throws ParseException {
         leasedBookDO createdRent = rentABookService.createRent(rentInfo);
         return new ResponseEntity(createdRent, HttpStatus.CREATED);
     }
     @PutMapping(path = "/leasedBook",consumes = "application/json",produces = "application/json")
-    public ResponseEntity<leasedBookDO> updateRent(@RequestBody leasedBookDO rentInfo){
+    public ResponseEntity<leasedBookDO> updateRent(@RequestBody leasedBookDO rentInfo) throws ParseException {
         leasedBookDO updatedRent = rentABookService.updateRent(rentInfo);
         return new ResponseEntity(updatedRent,HttpStatus.CREATED);
     }

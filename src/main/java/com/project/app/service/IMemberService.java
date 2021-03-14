@@ -14,4 +14,6 @@ public interface IMemberService {
     List<memberDO> getAllMembers();
 
     void deleteMember(String oid);
+
+    void save(memberDO member);
 }

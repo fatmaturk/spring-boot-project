@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
+//kitap modeline ait bilgiler
 @Data
 @Entity
 @Table(name = "member")

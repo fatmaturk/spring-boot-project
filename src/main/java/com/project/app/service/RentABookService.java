@@ -34,32 +34,45 @@ public class RentABookService implements IRentABookService{
     @Autowired
     private IRentalBookDAO rentalBookDAO;
 
+    //kiralama sureclerine ait islemleri icerir.
 
     @Override
     public leasedBookDO createRent(leasedBookDO rentInfo) throws ParseException {
+
         memberDO member = memberService.getMember(rentInfo.getMemberId());
 
+        //tarihi belirli bir formatta kaydetmek icin yapildi
         Date date = new Date();
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
+
+        //kitabin verilis tarihi setlenir
         String startDate = df.format(date);
+        rentInfo.setStartDate(startDate);
 
 
+        //uyenin ceza bitis tarihi gecmemisse kiralama islemi yapilmayacaktir.
         if (Integer.valueOf(member.getBanEndDate()) < Integer.valueOf(startDate)) {
             educationLevelDO educationLevel=  educationLevelDAO.getMemberId(member.getEducationLevelId());
+
+            //uyenin egitim seviyesine gore teslim tarihi bitis tarihi olarak hesaplanir
             String endDate = "";
-            rentInfo.setStartDate(startDate);
             Calendar c = Calendar.getInstance();
             c.setTime(df.parse(startDate));
             c.add(Calendar.DATE, educationLevel.getPeriodWeek() * 7);  // number of days to add
             endDate = df.format(c.getTime());
             rentInfo.setEndDate(endDate);
 
+            //kiralama kosulu uygun oldugundan stokta ilgili kitap olmadigi kaydedilir
             String bookId = rentInfo.getBookId();
             Optional<rentalBookDO> rentalBook = rentalBookDAO.findById(bookId);
             if(rentalBook.isPresent()){
                 rentalBook.get().setStockStatus(false);
-                rentalBookDAO.save(rentalBook.get());
             }
+
+            //kiralama islemi basarili oldugundan ban islemi kaldirilir.
+            member.setBanEndDate(null);
+            member.setBanStatus(false);
+            memberService.save(member);
 
             return rentABookDAO.save(rentInfo);
 
@@ -76,8 +89,12 @@ public class RentABookService implements IRentABookService{
         Optional<leasedBookDO> rent = rentABookDAO.findById(rentId);
 
         if(rent.isPresent()){
+
+            //teslim tarihi update edilir.
             rent.get().setDeliveryDate(CommonMethods.getCurrentDate("yyyyMMdd"));
             rentABookDAO.save(rent.get());
+
+            //teslim tarihi kitabın iade edilmesi gereken tarihten sonra ise uyeye ban islemi uygulanir.
             if (Integer.valueOf(rent.get().getEndDate()) < Integer.valueOf(rent.get().getDeliveryDate())) {
                 memberDO member = memberService.getMember(rentInfo.getMemberId());
                 member.setBanStatus(true);
